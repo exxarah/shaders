@@ -5,4 +5,12 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="OpenTK" Version="5.0.0-pre.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\shaders_lib\shaders_lib.csproj" />
+    </ItemGroup>
+
 </Project>

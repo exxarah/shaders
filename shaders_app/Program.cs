@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace shaders_app
+﻿namespace shaders_app
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            using var window = new Window(800, 600, "Shaders");
+            window.Run();
         }
     }
 }
