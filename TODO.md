@@ -26,3 +26,5 @@
 - [ ] FPS
 - [ ] UI to swap between shaders  
 - [ ] A bunch of nice UI stuff for live shader editing
+- [ ] Try out some post-processing stuff over top of a 3d scene
+- [ ] Mess more with vertex shaders, waves on a plane, etc
