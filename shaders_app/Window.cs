@@ -12,15 +12,23 @@ namespace shaders_app
     {
         private readonly float[] _vertices = new float[]
         {
-            // Center of the screen is 0? How to make square filling whole screen for 2d, -1 to 1?
+            // Center of the screen is 0. whole screen is -1 to 1
             //x      y     z
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f,
+             1.0f,  1.0f, 0.0f,
+             1.0f, -1.0f, 0.0f,
+            -1.0f, -1.0f, 0.0f,
+            -1.0f,  1.0f, 0.0f
+        };
+
+        private readonly uint[] _indices = new uint[]
+        {
+            0, 1, 3,    // triangle 1
+            1, 2, 3     // triangle 2
         };
 
         private int _vertexBufferObject;
         private int _vertexArrayObject;
+        private int _elementBufferObject;
 
         private Shader _shader;
         
@@ -42,10 +50,15 @@ namespace shaders_app
             _vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
-            
+
             // Make VAO
             _vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArrayObject);
+            
+            // Make EBO
+            _elementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
             // Inform of format of data
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
@@ -74,7 +87,7 @@ namespace shaders_app
             _shader.Use();
             
             GL.BindVertexArray(_vertexArrayObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             
             SwapBuffers();
         }
