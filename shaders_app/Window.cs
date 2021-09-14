@@ -1,4 +1,6 @@
-﻿using OpenTK.Mathematics;
+﻿using System;
+using System.Diagnostics;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -31,6 +33,7 @@ namespace shaders_app
         private int _elementBufferObject;
 
         private Shader _shader;
+        private Stopwatch _timer;
         
         public Window(int width, int height, string title) :
             base(new GameWindowSettings(), new NativeWindowSettings() {
@@ -67,6 +70,9 @@ namespace shaders_app
             // Please god someone save me from this awful path
             _shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
             _shader.Use();
+
+            _timer = new Stopwatch();
+            _timer.Start();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -86,6 +92,11 @@ namespace shaders_app
             GL.Clear(ClearBufferMask.ColorBufferBit);
             _shader.Use();
             
+            // Update uniform colour
+            double timeValue = _timer.Elapsed.TotalSeconds;
+            float greenValue = (float) Math.Sin(timeValue) / 2.0f + 0.5f;
+            _shader.SetVector4("timeColor", new Vector4(0.0f, greenValue, 0.0f, 0.0f));
+
             GL.BindVertexArray(_vertexArrayObject);
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             

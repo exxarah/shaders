@@ -2,8 +2,8 @@
 
 out vec4 fragColor;
 
-in vec4 vertexColor;    // in from vert. same name and type
+uniform vec4 timeColor;
 
 void main() {
-    fragColor = vertexColor;
+    fragColor = timeColor;
 }
