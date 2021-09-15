@@ -15,11 +15,11 @@ namespace shaders_app
         private readonly float[] _vertices = new float[]
         {
             // Center of the screen is 0. whole screen is -1 to 1
-            //x      y     z
-             1.0f,  1.0f, 0.0f,
-             1.0f, -1.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f,
-            -1.0f,  1.0f, 0.0f
+            //x      y     z    // colors
+             1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+             1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+            -1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
         };
 
         private readonly uint[] _indices = new uint[]
@@ -64,9 +64,12 @@ namespace shaders_app
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
             // Inform of format of data
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
-
+            
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
+            GL.EnableVertexAttribArray(1);
+            
             // Please god someone save me from this awful path
             _shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
             _shader.Use();
@@ -91,11 +94,6 @@ namespace shaders_app
             
             GL.Clear(ClearBufferMask.ColorBufferBit);
             _shader.Use();
-            
-            // Update uniform colour
-            double timeValue = _timer.Elapsed.TotalSeconds;
-            float greenValue = (float) Math.Sin(timeValue) / 2.0f + 0.5f;
-            _shader.SetVector4("timeColor", new Vector4(0.0f, greenValue, 0.0f, 0.0f));
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);

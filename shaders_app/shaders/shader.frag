@@ -1,9 +1,8 @@
 ﻿#version 330 core
 
 out vec4 fragColor;
-
-uniform vec4 timeColor;
+in vec3 thisColor;
 
 void main() {
-    fragColor = timeColor;
+    fragColor = vec4(thisColor, 1.0);
 }
