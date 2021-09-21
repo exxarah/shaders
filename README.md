@@ -11,6 +11,11 @@ A C# app using OpenGL through OpenTK, focused on experimenting with shaders
 - [OpenGL Wiki](https://www.khronos.org/opengl/wiki/Main_Page) for further OpenGL queries
 - [OpenTK Library](https://opentk.net/index.html) for C# bindings
 - [ImGui.NET Library](https://github.com/mellinoe/ImGui.NET) for the UI stuff
+- [Unity Node-Based Editor Tutorial](https://gram.gs/gramlog/creating-node-based-editor-unity/) as a tutorial in creating a node-based system
+- [ImGui Node Editor](https://github.com/thedmd/imgui-node-editor) an example of a node-based editor built using C++ and ImGui
+- [Blender3D Source Code](https://github.com/blender/blender) a robust example of a node-based shader editor
+- [glTF Specification Overview](https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png) to understand the format graphically
+- [FbxSharp](https://github.com/izrik/FbxSharp) an example/library of importing .fbx files
 
 ## Shader Resources
 - [The Book of Shaders](https://thebookofshaders.com/) for understanding what on earth is happening
