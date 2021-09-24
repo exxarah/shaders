@@ -21,3 +21,4 @@ A C# app using OpenGL through OpenTK, focused on experimenting with shaders
 - [The Book of Shaders](https://thebookofshaders.com/) for understanding what on earth is happening
 - [ShaderToy](https://www.shadertoy.com/) for inspiration and examples of what's possible
 - [Youtube Series about Shaders](https://www.youtube.com/playlist?list=PLImQaTpSAdsCnJon-Eir92SZMl7tPBS4Z)
+- [Shader Holy Grail Articles](https://www.iquilezles.org/www/index.htm)

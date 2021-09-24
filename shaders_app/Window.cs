@@ -28,6 +28,9 @@ namespace shaders_app
             1, 2, 3     // triangle 2
         };
 
+        private readonly string fragShader = "wave";
+        private readonly string vertShader = "shader";
+
         private int _vertexBufferObject;
         private int _vertexArrayObject;
         private int _elementBufferObject;
@@ -71,7 +74,7 @@ namespace shaders_app
             GL.EnableVertexAttribArray(1);
             
             // Please god someone save me from this awful path
-            _shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
+            _shader = new Shader("../../../shaders/" + vertShader + ".vert", "../../../shaders/" + fragShader + ".frag");
             _shader.Use();
 
             _timer = new Stopwatch();
@@ -94,6 +97,12 @@ namespace shaders_app
             
             GL.Clear(ClearBufferMask.ColorBufferBit);
             _shader.Use();
+            
+            // Set uniforms
+            _shader.SetVector2("u_Resolution", Size);
+            // WARNING: If you get an error that this is not found, it's because GLSL is specifically checking if the
+            // uniform is active (being used) and contributing to the final result!
+            _shader.SetFloat("u_Time", (float)_timer.Elapsed.TotalSeconds);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);

@@ -135,6 +135,17 @@ namespace shaders_lib
         }
         
         /// <summary>
+        /// Set a uniform vector2 on this shader
+        /// </summary>
+        /// <param name="name">The name of the uniform</param>
+        /// <param name="data">The data to be set</param>
+        public void SetVector2(string name, Vector2 data)
+        {
+            GL.UseProgram(Handle);
+            GL.Uniform2(_uniformLocations[name], data);
+        }
+        
+        /// <summary>
         /// Set a uniform vector3 on this shader
         /// </summary>
         /// <param name="name">The name of the uniform</param>
