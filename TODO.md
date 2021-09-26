@@ -6,7 +6,7 @@
   - [X] A square that's ready to have shaders put on it
   - [X] Any library stuff useful for that
 - [ ] 2d Experimentation (these aren't for the assignment, but are groundwork)
-  - [ ] Fractals
+  - [X] Fractals
   - [ ] Make a bunch of shapes, test out ShaderToy code
   - [ ] Random noise
   - [ ] Get comfortable with GLSL
