@@ -5,11 +5,10 @@
 - [X] Have everything in place for 2d shader practice
   - [X] A square that's ready to have shaders put on it
   - [X] Any library stuff useful for that
-- [ ] 2d Experimentation (these aren't for the assignment, but are groundwork)
+- [X] 2d Experimentation (these aren't for the assignment, but are groundwork)
   - [X] Fractals
-  - [ ] Make a bunch of shapes, test out ShaderToy code
-  - [ ] Random noise
-  - [ ] Get comfortable with GLSL
+  - [X] Random noise
+  - [X] Get comfortable with GLSL
 - [ ] Have everything in place for 3d shader practice
   - [ ] Meshes (as in generate a cube or sphere)
   - [ ] Lights
