@@ -5,15 +5,15 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 using OpenTK.Mathematics;
 
-namespace shaders_lib
+namespace shaders_lib.Shaders
 {
     /// <summary>
     /// Represents an OpenGL Program, consisting of a number of Shaders
     /// </summary>
-    public class Shader
+    public abstract class Shader
     {
         public readonly int Handle;
-
+        
         private readonly Dictionary<string, int> _uniformLocations;
 
         /// <summary>
@@ -21,27 +21,21 @@ namespace shaders_lib
         /// </summary>
         /// <param name="vertPath">Path to the desired Vertex Shader</param>
         /// <param name="fragPath">Path to the desired Fragment Shader</param>
-        public Shader(string vertPath, string fragPath)
+        protected Shader(string vertPath, string fragPath)
         {
-            var shaderSource = File.ReadAllText(vertPath);
-            var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(vertexShader, shaderSource);
-            CompileShader(vertexShader);
-
-            shaderSource = File.ReadAllText(fragPath);
-            var fragShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(fragShader, shaderSource);
-            CompileShader(fragShader);
+            int vertexShader = LoadShader(vertPath, ShaderType.VertexShader);
+            int fragmentShader = LoadShader(fragPath, ShaderType.FragmentShader);
 
             Handle = GL.CreateProgram();
             GL.AttachShader(Handle, vertexShader);
-            GL.AttachShader(Handle, fragShader);
+            GL.AttachShader(Handle, fragmentShader);
             LinkProgram(Handle);
-            
+            BindAttributes();
+
             GL.DetachShader(Handle, vertexShader);
-            GL.DetachShader(Handle, fragShader);
+            GL.DetachShader(Handle, fragmentShader);
             GL.DeleteShader(vertexShader);
-            GL.DeleteShader(fragShader);
+            GL.DeleteShader(fragmentShader);
             
             GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
             _uniformLocations = new Dictionary<string, int>();
@@ -51,6 +45,28 @@ namespace shaders_lib
                 var location = GL.GetUniformLocation(Handle, key);
                 _uniformLocations.Add(key, location);
             }
+        }
+
+        protected abstract void BindAttributes();
+
+        protected void BindAttribute(int attribute, String variableName)
+        {
+            GL.BindAttribLocation(Handle, attribute, variableName);
+        }
+
+        /// <summary>
+        /// Loads a shader from a specified path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private static int LoadShader(string path, ShaderType type)
+        {
+            string shaderSource = File.ReadAllText(path);
+            var shader = GL.CreateShader(type);
+            GL.ShaderSource(shader, shaderSource);
+            CompileShader(shader);
+            return shader;
         }
 
         /// <summary>
@@ -88,9 +104,17 @@ namespace shaders_lib
         /// <summary>
         /// Wraps GL.UseProgram to enable easy object-oriented use and access
         /// </summary>
-        public void Use()
+        public void Start()
         {
             GL.UseProgram(Handle);
+        }
+
+        /// <summary>
+        /// Wraps GL.UseProgram with an input of 0, to unbind the current shader
+        /// </summary>
+        public void Stop()
+        {
+            GL.UseProgram(0);
         }
 
         /// <summary>

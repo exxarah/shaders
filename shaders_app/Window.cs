@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -7,6 +6,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using OpenTK.Graphics.OpenGL;
 using shaders_lib;
+using shaders_lib.Shaders;
 
 namespace shaders_app
 {
@@ -25,13 +25,10 @@ namespace shaders_app
             3, 1, 2,
         };
 
-        private readonly string fragShader = "mandelbrot";
-        private readonly string vertShader = "shader";
-        
         private Loader _loader;
         private Renderer _renderer;
         private Model _square;
-        private Shader _shader;
+        private StaticShader _shader;
         private Stopwatch _timer;
         
         public Window(int width, int height, string title) :
@@ -50,9 +47,8 @@ namespace shaders_app
 
             _square = _loader.LoadToVAO(_vertices, _indices);
             
-            // Please god someone save me from this awful path
-            _shader = new Shader("../../../shaders/" + vertShader + ".vert", "../../../shaders/" + fragShader + ".frag");
-            _shader.Use();
+            _shader = new StaticShader();
+            _shader.Start();
 
             _timer = new Stopwatch();
             _timer.Start();
@@ -73,17 +69,18 @@ namespace shaders_app
             base.OnRenderFrame(args);
             
             _renderer.Prepare();
-            _shader.Use();
+            _shader.Start();
             
             // Set uniforms
             // WARNING: If you get an error that this is not found, it's because GLSL is specifically checking if the
             // uniform is active (being used) and contributing to the final result! Otherwise, it is never added to the
             // dictionary or made accessible
             
-            _shader.SetVector2("u_Resolution", Size);
+            // _shader.SetVector2("u_Resolution", Size);
             // _shader.SetFloat("u_Time", (float)_timer.Elapsed.TotalSeconds);
 
             _renderer.Render(_square);
+            _shader.Stop();
             
             SwapBuffers();
         }
