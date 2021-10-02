@@ -12,29 +12,21 @@ namespace shaders_app
 {
     public class Window : GameWindow
     {
-        private readonly float[] _vertices = new float[]
-        {
-            // Center of the screen is 0. whole screen is -1 to 1
-            //x      y     z    // colors
-             1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-             1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-            -1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-        };
-
-        private readonly uint[] _indices = new uint[]
-        {
-            0, 1, 3,    // triangle 1
-            1, 2, 3     // triangle 2
+        private readonly float[] _vertices = {
+            -0.5f, 0.5f, 0f,
+            -0.5f, -0.5f, 0f,
+            0.5f, -0.5f, 0f,
+            0.5f, -0.5f, 0f,
+            0.5f, 0.5f, 0f,
+            -0.5f, 0.5f, 0f
         };
 
         private readonly string fragShader = "mandelbrot";
         private readonly string vertShader = "shader";
-
-        private int _vertexBufferObject;
-        private int _vertexArrayObject;
-        private int _elementBufferObject;
-
+        
+        private Loader _loader;
+        private Renderer _renderer;
+        private Model _square;
         private Shader _shader;
         private Stopwatch _timer;
         
@@ -52,26 +44,11 @@ namespace shaders_app
             // Set default clear colour
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-            // Make VBO
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+            _loader = new Loader();
 
-            // Make VAO
-            _vertexArrayObject = GL.GenVertexArray();
-            GL.BindVertexArray(_vertexArrayObject);
-            
-            // Make EBO
-            _elementBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
+            _renderer = new Renderer();
 
-            // Inform of format of data
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(0);
-            
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
-            GL.EnableVertexAttribArray(1);
+            _square = _loader.LoadToVAO(_vertices);
             
             // Please god someone save me from this awful path
             _shader = new Shader("../../../shaders/" + vertShader + ".vert", "../../../shaders/" + fragShader + ".frag");
@@ -95,7 +72,7 @@ namespace shaders_app
         {
             base.OnRenderFrame(args);
             
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            _renderer.Prepare();
             _shader.Use();
             
             // Set uniforms
@@ -106,8 +83,7 @@ namespace shaders_app
             _shader.SetVector2("u_Resolution", Size);
             // _shader.SetFloat("u_Time", (float)_timer.Elapsed.TotalSeconds);
 
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            _renderer.Render(_square);
             
             SwapBuffers();
         }
@@ -117,6 +93,12 @@ namespace shaders_app
             base.OnResize(e);
             
             GL.Viewport(0, 0, Size.X, Size.Y);
+        }
+
+        protected override void OnUnload()
+        {
+            base.OnUnload();
+            _loader.CleanUp();
         }
     }
 }
