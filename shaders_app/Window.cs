@@ -16,9 +16,13 @@ namespace shaders_app
             -0.5f, 0.5f, 0f,
             -0.5f, -0.5f, 0f,
             0.5f, -0.5f, 0f,
-            0.5f, -0.5f, 0f,
             0.5f, 0.5f, 0f,
-            -0.5f, 0.5f, 0f
+        };
+
+        private readonly int[] _indices =
+        {
+            0, 1, 3,
+            3, 1, 2,
         };
 
         private readonly string fragShader = "mandelbrot";
@@ -41,14 +45,10 @@ namespace shaders_app
         {
             base.OnLoad();
 
-            // Set default clear colour
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
             _loader = new Loader();
+            _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f));
 
-            _renderer = new Renderer();
-
-            _square = _loader.LoadToVAO(_vertices);
+            _square = _loader.LoadToVAO(_vertices, _indices);
             
             // Please god someone save me from this awful path
             _shader = new Shader("../../../shaders/" + vertShader + ".vert", "../../../shaders/" + fragShader + ".frag");
