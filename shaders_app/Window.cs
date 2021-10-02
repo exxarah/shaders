@@ -28,7 +28,7 @@ namespace shaders_app
             1, 2, 3     // triangle 2
         };
 
-        private readonly string fragShader = "perlin";
+        private readonly string fragShader = "mandelbrot";
         private readonly string vertShader = "shader";
 
         private int _vertexBufferObject;
@@ -103,7 +103,7 @@ namespace shaders_app
             // uniform is active (being used) and contributing to the final result! Otherwise, it is never added to the
             // dictionary or made accessible
             
-            // _shader.SetVector2("u_Resolution", Size);
+            _shader.SetVector2("u_Resolution", Size);
             // _shader.SetFloat("u_Time", (float)_timer.Elapsed.TotalSeconds);
 
             GL.BindVertexArray(_vertexArrayObject);
