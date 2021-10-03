@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -6,6 +7,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using OpenTK.Graphics.OpenGL;
 using shaders_lib;
+using shaders_lib.Entities;
 using shaders_lib.Shaders;
 using shaders_lib.Textures;
 
@@ -13,29 +15,89 @@ namespace shaders_app
 {
     public class Window : GameWindow
     {
-        private readonly float[] _vertices = {
-            -0.5f, 0.5f, 0f,
-            -0.5f, -0.5f, 0f,
-            0.5f, -0.5f, 0f,
-            0.5f, 0.5f, 0f,
+        float[] _vertices = {			
+            -0.5f,0.5f,-0.5f,	
+            -0.5f,-0.5f,-0.5f,	
+            0.5f,-0.5f,-0.5f,	
+            0.5f,0.5f,-0.5f,		
+				
+            -0.5f,0.5f,0.5f,	
+            -0.5f,-0.5f,0.5f,	
+            0.5f,-0.5f,0.5f,	
+            0.5f,0.5f,0.5f,
+				
+            0.5f,0.5f,-0.5f,	
+            0.5f,-0.5f,-0.5f,	
+            0.5f,-0.5f,0.5f,	
+            0.5f,0.5f,0.5f,
+				
+            -0.5f,0.5f,-0.5f,	
+            -0.5f,-0.5f,-0.5f,	
+            -0.5f,-0.5f,0.5f,	
+            -0.5f,0.5f,0.5f,
+				
+            -0.5f,0.5f,0.5f,
+            -0.5f,0.5f,-0.5f,
+            0.5f,0.5f,-0.5f,
+            0.5f,0.5f,0.5f,
+				
+            -0.5f,-0.5f,0.5f,
+            -0.5f,-0.5f,-0.5f,
+            0.5f,-0.5f,-0.5f,
+            0.5f,-0.5f,0.5f
+				
         };
+		
+        float[] _uvs = {
+				
+            0,0,
+            0,1,
+            1,1,
+            1,0,			
+            0,0,
+            0,1,
+            1,1,
+            1,0,			
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0
 
-        private readonly float[] _uv =
-        {
-            0, 0,
-            0, 1,
-            1, 1,
-            1, 0,
+				
         };
+		
+        int[] _indices = {
+            0,1,3,	
+            3,1,2,	
+            4,5,7,
+            7,5,6,
+            8,9,11,
+            11,9,10,
+            12,13,15,
+            15,13,14,	
+            16,17,19,
+            19,17,18,
+            20,21,23,
+            23,21,22
 
-        private readonly int[] _indices =
-        {
-            0, 1, 3,
-            3, 1, 2,
         };
 
         private Loader _loader;
         private Renderer _renderer;
+
+        private Camera _camera;
         
         private RawModel _square;
         private Texture _texture;
@@ -61,12 +123,14 @@ namespace shaders_app
             base.OnLoad();
 
             _loader = new Loader();
-            _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f), Size);
+            _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f));
 
-            _square = _loader.LoadToVAO(_vertices, _uv,  _indices);
+            _camera = new Camera(new Vector3(0, 0, 3), Size);
+
+            _square = _loader.LoadToVAO(_vertices, _uvs,  _indices);
             _texture = _loader.LoadTexture("default.png");
             _model = new TexturedModel(_square, _texture);
-            _entity = new Entity(_model, new Vector3(0, 0, -1));
+            _entity = new Entity(_model, new Vector3(0, 0, 0));
             
             _shader = new StaticShader();
             _shader.Start();
@@ -84,7 +148,37 @@ namespace shaders_app
                 Close();
             }
 
-            _entity.Move(0, 0, (float)(-1 * e.Time));
+            if (KeyboardState.IsKeyDown(Keys.W))
+            {
+                _camera.Move(0, 0, -0.02f);
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.S))
+            {
+                _camera.Move(0, 0, 0.02f);
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.A))
+            {
+                _camera.Move(-0.02f, 0, 0);
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.D))
+            {
+                _camera.Move(0.02f, 0, 0);
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.LeftShift))
+            {
+                _camera.Move(0, -0.02f, 0);
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.Space))
+            {
+                _camera.Move(0, 0.02f, 0);
+            }
+            
+            _entity.Rotate(1, 1, 0);
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -92,7 +186,7 @@ namespace shaders_app
             base.OnRenderFrame(args);
             
             _renderer.Prepare();
-            _renderer.Render(_entity, _shader);
+            _renderer.Render(_entity, _shader, _camera);
 
             SwapBuffers();
         }
@@ -102,7 +196,6 @@ namespace shaders_app
             base.OnResize(e);
             
             GL.Viewport(0, 0, Size.X, Size.Y);
-            _renderer.Resize(Size);
         }
 
         protected override void OnUnload()
