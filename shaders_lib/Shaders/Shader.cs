@@ -37,14 +37,7 @@ namespace shaders_lib.Shaders
             GL.DeleteShader(vertexShader);
             GL.DeleteShader(fragmentShader);
             
-            GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
-            _uniformLocations = new Dictionary<string, int>();
-            for (int i = 0; i < numberOfUniforms; i++)
-            {
-                var key = GL.GetActiveUniform(Handle, i, out _, out _);
-                var location = GL.GetUniformLocation(Handle, key);
-                _uniformLocations.Add(key, location);
-            }
+            _uniformLocations = GetAllUniformLocations();
         }
 
         protected abstract void BindAttributes();
@@ -100,6 +93,25 @@ namespace shaders_lib.Shaders
                 throw new Exception($"Error occurred while compiling Program({program}).\n\n{infolog}");
             }
         }
+        
+        /// <summary>
+        /// Get every ActiveUniform (note, they only count as active if they're used towards the final result, and
+        /// adds them to a dictionary for easy lookup when setting uniform variables
+        /// </summary>
+        /// <returns>A dictionary of uniform names and locations</returns>
+        private Dictionary<string, int> GetAllUniformLocations()
+        {
+            GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
+            var uniformLocations = new Dictionary<string, int>();
+            for (int i = 0; i < numberOfUniforms; i++)
+            {
+                var key = GL.GetActiveUniform(Handle, i, out _, out _);
+                var location = GL.GetUniformLocation(Handle, key);
+                uniformLocations.Add(key, location);
+            }
+
+            return uniformLocations;
+        }
 
         /// <summary>
         /// Wraps GL.UseProgram to enable easy object-oriented use and access
@@ -116,15 +128,7 @@ namespace shaders_lib.Shaders
         {
             GL.UseProgram(0);
         }
-
-        /// <summary>
-        /// Wraps GL.GetAttribLocation to enable easy object-oriented use and access
-        /// </summary>
-        public int GetAttribLocation(string attribName)
-        {
-            return GL.GetAttribLocation(Handle, attribName);
-        }
-
+        
         /// <summary>
         /// Set a uniform int on this shader
         /// </summary>
@@ -132,7 +136,6 @@ namespace shaders_lib.Shaders
         /// <param name="data">The data to be set</param>
         public void SetInt(string name, int data)
         {
-            GL.UseProgram(Handle);
             GL.Uniform1(_uniformLocations[name], data);
         }
         
@@ -143,8 +146,24 @@ namespace shaders_lib.Shaders
         /// <param name="data">The data to be set</param>
         public void SetFloat(string name, float data)
         {
-            GL.UseProgram(Handle);
             GL.Uniform1(_uniformLocations[name], data);
+        }
+
+        /// <summary>
+        /// Set a uniform float on this shader, in response to a boolean
+        /// </summary>
+        /// <param name="name">The name of the uniform</param>
+        /// <param name="data">The data to be set</param>
+        public void SetBoolean(string name, bool data)
+        {
+            if (data)
+            {
+                GL.Uniform1(_uniformLocations[name], 1.0f);
+            }
+            else
+            {
+                GL.Uniform1(_uniformLocations[name], 0.0f);
+            }
         }
         
         /// <summary>
@@ -154,7 +173,6 @@ namespace shaders_lib.Shaders
         /// <param name="data">The data to be set</param>
         public void SetMatrix4(string name, Matrix4 data)
         {
-            GL.UseProgram(Handle);
             GL.UniformMatrix4(_uniformLocations[name], true, ref data);
         }
         
@@ -165,7 +183,6 @@ namespace shaders_lib.Shaders
         /// <param name="data">The data to be set</param>
         public void SetVector2(string name, Vector2 data)
         {
-            GL.UseProgram(Handle);
             GL.Uniform2(_uniformLocations[name], data);
         }
         
@@ -176,7 +193,6 @@ namespace shaders_lib.Shaders
         /// <param name="data">The data to be set</param>
         public void SetVector3(string name, Vector3 data)
         {
-            GL.UseProgram(Handle);
             GL.Uniform3(_uniformLocations[name], data);
         }
 
@@ -187,7 +203,6 @@ namespace shaders_lib.Shaders
         /// <param name="data">The data to be set</param>
         public void SetVector4(string name, Vector4 data)
         {
-            GL.UseProgram(Handle);
             GL.Uniform4(_uniformLocations[name], data);
         }
     }

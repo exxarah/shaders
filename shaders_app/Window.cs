@@ -36,15 +36,22 @@ namespace shaders_app
 
         private Loader _loader;
         private Renderer _renderer;
+        
         private RawModel _square;
         private Texture _texture;
         private TexturedModel _model;
+        private Entity _entity;
+        
         private StaticShader _shader;
         private Stopwatch _timer;
-        
-        public Window(int width, int height, string title) :
-            base(new GameWindowSettings(), new NativeWindowSettings() {
-                Size = new Vector2i(width, height), 
+
+        public Window(int width, int height, string title, int fps) :
+            base(new GameWindowSettings()
+            {
+                UpdateFrequency = fps
+            }, new NativeWindowSettings()
+            {
+                Size = new Vector2i(width, height),
                 Title = title
             })
         { }
@@ -59,6 +66,7 @@ namespace shaders_app
             _square = _loader.LoadToVAO(_vertices, _uv,  _indices);
             _texture = _loader.LoadTexture("default.png");
             _model = new TexturedModel(_square, _texture);
+            _entity = new Entity(_model, new Vector3(-1, 0, 0));
             
             _shader = new StaticShader();
             _shader.Start();
@@ -75,6 +83,9 @@ namespace shaders_app
             {
                 Close();
             }
+
+            _entity.Move(0.002f, 0, 0);
+            _entity.Rotate(0, 1, 0);
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -82,19 +93,8 @@ namespace shaders_app
             base.OnRenderFrame(args);
             
             _renderer.Prepare();
-            _shader.Start();
-            
-            // Set uniforms
-            // WARNING: If you get an error that this is not found, it's because GLSL is specifically checking if the
-            // uniform is active (being used) and contributing to the final result! Otherwise, it is never added to the
-            // dictionary or made accessible
-            
-            // _shader.SetVector2("u_Resolution", Size);
-            // _shader.SetFloat("u_Time", (float)_timer.Elapsed.TotalSeconds);
+            _renderer.Render(_entity, _shader);
 
-            _renderer.Render(_model);
-            _shader.Stop();
-            
             SwapBuffers();
         }
 

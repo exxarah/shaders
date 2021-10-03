@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
+using shaders_lib.Shaders;
 
 namespace shaders_lib
 {
@@ -27,15 +28,22 @@ namespace shaders_lib
         }
 
         /// <summary>
-        /// Draw a TexturedModel to the screen
+        /// Draw an Entity to the screen
         /// </summary>
-        /// <param name="model">The Model to draw</param>
-        public void Render(TexturedModel model)
+        /// <param name="entity">The entity to draw</param>
+        /// <param name="shader">The shader to draw with</param>
+        public void Render(Entity entity, StaticShader shader)
         {
+            shader.Start();
+            TexturedModel model = entity.Model;
             var rawModel = model.Model;
             GL.BindVertexArray(rawModel.Handle);
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
+            Matrix4 transformationMatrix =
+                Util.Maths.CreateTransformationMatrix(entity.Position, entity.Rotation, entity.Scale);
+            shader.SetMatrix4("transformationMatrix", transformationMatrix);
+            
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, model.Texture.Handle);
 
@@ -45,6 +53,7 @@ namespace shaders_lib
             GL.DisableVertexAttribArray(1);
             GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.BindVertexArray(0);
+            shader.Stop();
         }
     }
 }
