@@ -8,6 +8,10 @@ using SixLabors.ImageSharp.Processing;
 
 namespace shaders_lib
 {
+    /// <summary>
+    /// A handy class to take care of loading resources. Keeps track of OpenGL handles to ensure they're cleaned up,
+    /// and gives a place to store different loading methods (eg, OBJ vs FBX, PNG vs JPG)
+    /// </summary>
     public class Loader
     {
         private List<int> _vaos = new List<int>();

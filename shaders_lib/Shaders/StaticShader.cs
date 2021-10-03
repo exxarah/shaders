@@ -2,6 +2,9 @@
 
 namespace shaders_lib.Shaders
 {
+    /// <summary>
+    /// A simple shader that doesn't do anything too fancy
+    /// </summary>
     public class StaticShader : Shader
     {
         private static readonly string VertexPath = "Assets/glsl/static.vert";
