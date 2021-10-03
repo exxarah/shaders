@@ -61,12 +61,12 @@ namespace shaders_app
             base.OnLoad();
 
             _loader = new Loader();
-            _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f));
+            _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f), Size);
 
             _square = _loader.LoadToVAO(_vertices, _uv,  _indices);
             _texture = _loader.LoadTexture("default.png");
             _model = new TexturedModel(_square, _texture);
-            _entity = new Entity(_model, new Vector3(-1, 0, 0));
+            _entity = new Entity(_model, new Vector3(0, 0, -1));
             
             _shader = new StaticShader();
             _shader.Start();
@@ -84,8 +84,7 @@ namespace shaders_app
                 Close();
             }
 
-            _entity.Move(0.002f, 0, 0);
-            _entity.Rotate(0, 1, 0);
+            _entity.Move(0, 0, (float)(-1 * e.Time));
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -103,6 +102,7 @@ namespace shaders_app
             base.OnResize(e);
             
             GL.Viewport(0, 0, Size.X, Size.Y);
+            _renderer.Resize(Size);
         }
 
         protected override void OnUnload()
