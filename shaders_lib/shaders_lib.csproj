@@ -7,12 +7,17 @@
 
     <ItemGroup>
       <PackageReference Include="OpenTK" Version="4.6.4" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="Assets\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets\textures" />
     </ItemGroup>
 
 </Project>

@@ -3,14 +3,14 @@
     /// <summary>
     /// Represents a 3d Model stored in Memory
     /// </summary>
-    public class Model
+    public class RawModel
     {
-        public readonly int ID;
+        public readonly int Handle;
         public readonly int VertexCount;
 
-        public Model(int id, int vertexCount)
+        public RawModel(int handle, int vertexCount)
         {
-            this.ID = id;
+            this.Handle = handle;
             this.VertexCount = vertexCount;
         }
     }

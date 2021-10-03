@@ -7,6 +7,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Graphics.OpenGL;
 using shaders_lib;
 using shaders_lib.Shaders;
+using shaders_lib.Textures;
 
 namespace shaders_app
 {
@@ -19,6 +20,14 @@ namespace shaders_app
             0.5f, 0.5f, 0f,
         };
 
+        private readonly float[] _uv =
+        {
+            0, 0,
+            0, 1,
+            1, 1,
+            1, 0,
+        };
+
         private readonly int[] _indices =
         {
             0, 1, 3,
@@ -27,7 +36,9 @@ namespace shaders_app
 
         private Loader _loader;
         private Renderer _renderer;
-        private Model _square;
+        private RawModel _square;
+        private Texture _texture;
+        private TexturedModel _model;
         private StaticShader _shader;
         private Stopwatch _timer;
         
@@ -45,7 +56,9 @@ namespace shaders_app
             _loader = new Loader();
             _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f));
 
-            _square = _loader.LoadToVAO(_vertices, _indices);
+            _square = _loader.LoadToVAO(_vertices, _uv,  _indices);
+            _texture = _loader.LoadTexture("default.png");
+            _model = new TexturedModel(_square, _texture);
             
             _shader = new StaticShader();
             _shader.Start();
@@ -79,7 +92,7 @@ namespace shaders_app
             // _shader.SetVector2("u_Resolution", Size);
             // _shader.SetFloat("u_Time", (float)_timer.Elapsed.TotalSeconds);
 
-            _renderer.Render(_square);
+            _renderer.Render(_model);
             _shader.Stop();
             
             SwapBuffers();

@@ -29,8 +29,8 @@ namespace shaders_lib.Shaders
             Handle = GL.CreateProgram();
             GL.AttachShader(Handle, vertexShader);
             GL.AttachShader(Handle, fragmentShader);
-            LinkProgram(Handle);
             BindAttributes();
+            LinkProgram(Handle);
 
             GL.DetachShader(Handle, vertexShader);
             GL.DetachShader(Handle, fragmentShader);

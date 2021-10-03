@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 namespace shaders_lib
@@ -26,15 +27,23 @@ namespace shaders_lib
         }
 
         /// <summary>
-        /// Draw a Model to the screen
+        /// Draw a TexturedModel to the screen
         /// </summary>
         /// <param name="model">The Model to draw</param>
-        public void Render(Model model)
+        public void Render(TexturedModel model)
         {
-            GL.BindVertexArray(model.ID);
+            var rawModel = model.Model;
+            GL.BindVertexArray(rawModel.Handle);
             GL.EnableVertexAttribArray(0);
-            GL.DrawElements(PrimitiveType.Triangles, model.VertexCount, DrawElementsType.UnsignedInt, 0);
+            GL.EnableVertexAttribArray(1);
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, model.Texture.Handle);
+
+            GL.DrawElements(PrimitiveType.Triangles, rawModel.VertexCount, DrawElementsType.UnsignedInt, 0);
+            
             GL.DisableVertexAttribArray(0);
+            GL.DisableVertexAttribArray(1);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.BindVertexArray(0);
         }
     }
