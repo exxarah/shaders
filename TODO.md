@@ -9,10 +9,10 @@
   - [X] Fractals
   - [X] Random noise
   - [X] Get comfortable with GLSL
-- [ ] Have everything in place for 3d shader practice
-  - [ ] Meshes (as in generate a cube or sphere)
+- [X] Have everything in place for 3d shader practice
+  - [X] Meshes (as in generate a cube or sphere)
   - [ ] Lights
-  - [ ] Cameras
+  - [X] Cameras
   - [ ] Add a sphere floating in space
   - [ ] Mouse input to rotate the sphere
   - [ ] Mouse input to rotate the light
