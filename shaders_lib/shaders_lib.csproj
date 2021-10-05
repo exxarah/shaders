@@ -15,9 +15,4 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Assets\textures" />
-    </ItemGroup>
-
 </Project>

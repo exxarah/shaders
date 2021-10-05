@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK.Mathematics;
+using shaders_lib.Models;
 
 namespace shaders_lib.Entities
 {

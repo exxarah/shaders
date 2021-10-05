@@ -1,6 +1,6 @@
 ﻿using shaders_lib.Textures;
 
-namespace shaders_lib
+namespace shaders_lib.Models
 {
     /// <summary>
     /// Represents a 3d model and texture, paired together for ease of access

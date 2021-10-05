@@ -1,4 +1,4 @@
-﻿namespace shaders_lib
+﻿namespace shaders_lib.Models
 {
     /// <summary>
     /// Represents a 3d Model stored in Memory

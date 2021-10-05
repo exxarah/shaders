@@ -9,7 +9,7 @@
   - [X] Fractals
   - [X] Random noise
   - [X] Get comfortable with GLSL
-- [X] Have everything in place for 3d shader practice
+- [X] Have everything in place for 3d shader stuff
   - [X] Meshes (as in generate a cube or sphere)
   - [ ] Lights
   - [X] Cameras

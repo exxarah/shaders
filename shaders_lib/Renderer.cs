@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using shaders_lib.Entities;
+using shaders_lib.Models;
 using shaders_lib.Shaders;
 
 namespace shaders_lib

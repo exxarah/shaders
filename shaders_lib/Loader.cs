@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenTK.Graphics.OpenGL;
+using shaders_lib.Models;
 using shaders_lib.Textures;
+using shaders_lib.Util;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -25,7 +28,7 @@ namespace shaders_lib
         /// <param name="uvs">The UV Texture Coordinates of the vertices</param>
         /// <param name="indices">The indices of vertices, how they relate to each other and form triangles</param>
         /// <returns>The new model</returns>
-        public RawModel LoadToVAO(float[] positions, float[] uvs, int[] indices)
+        public RawModel LoadToVao(float[] positions, float[] uvs, int[] indices)
         {
             int vaoID = CreateVAO();
             BindIndicesBuffer(indices);
@@ -35,13 +38,31 @@ namespace shaders_lib
             return new RawModel(vaoID, indices.Length);
         }
 
+        public RawModel LoadToVao(ModelData data)
+        {
+            return LoadToVao(data.Vertices, data.Uvs, data.Indices);
+        }
+
+        public RawModel LoadModel(string fileName)
+        {
+            ModelData data;
+            try
+            {
+                data = ParseFile(fileName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error occurred while loading Model({fileName}).\n\n{e}");
+                throw;
+            }
+            return LoadToVao(data);
+        }
+
         /// <summary>
         /// Create a texture from a file
         /// </summary>
         /// <param name="fileName">The image to be loaded as a texture</param>
-        /// <param name="format">The format of the image</param>
         /// <returns>The new texture</returns>
-        /// <exception cref="Exception">Incase the TextureLoader is unable to properly load the provided image</exception>
         public Texture LoadTexture(string fileName)
         {
             string path = "Assets/textures/" + fileName;
@@ -142,6 +163,29 @@ namespace shaders_lib
 
         #endregion
 
+        #region Models
+
+        public ModelData ParseFile(string fileName)
+        {
+            string path = "Assets/models/" + fileName;
+            string fileType = fileName.Split('.').Last();
+
+            ModelData data;
+            
+            if (fileType == "obj")
+            {
+                data = ObjLoader.Parse(path);
+            }
+            else
+            {
+                throw new ModelFormatException();
+            }
+
+            return data;
+        }
+
+        #endregion
+        
         #region Textures
 
         /// <summary>
