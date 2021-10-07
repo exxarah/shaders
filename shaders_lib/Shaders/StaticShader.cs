@@ -1,4 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using shaders_lib.Entities;
 
 namespace shaders_lib.Shaders
 {
@@ -15,6 +17,26 @@ namespace shaders_lib.Shaders
         {
             BindAttribute(0, "position");
             BindAttribute(1, "textureCoord");
+            BindAttribute(2, "normal");
+        }
+
+        public void LoadEntity(Entity entity)
+        {
+            Matrix4 transformationMatrix =
+                Util.Maths.CreateTransformationMatrix(entity.Position, entity.Rotation, entity.Scale);
+            SetMatrix4("transformationMatrix", transformationMatrix);
+        }
+
+        public void LoadCamera(Camera camera)
+        {
+            SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
+            SetMatrix4("viewMatrix", camera.GetViewMatrix());
+        }
+
+        public void LoadLight(Light light)
+        {
+            SetVector3("lightPosition", light.Position);
+            SetVector3("lightColor", light.Color);
         }
     }
 }

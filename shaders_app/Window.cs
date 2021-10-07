@@ -20,6 +20,7 @@ namespace shaders_app
         private Renderer _renderer;
 
         private Camera _camera;
+        private Light _light;
         
         private RawModel _cube;
         private Texture _texture;
@@ -48,8 +49,9 @@ namespace shaders_app
             _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f));
 
             _camera = new Camera(new Vector3(0, 0, 3), Size);
+            _light = new Light(new Vector3(0, 0, 10), Vector3.One);
             
-            _cube = _loader.LoadModel("sphere.obj");
+            _cube = _loader.LoadModel("suzanne.obj");
             _texture = _loader.LoadTexture("default.png");
             _model = new TexturedModel(_cube, _texture);
             _entity = new Entity(_model, new Vector3(0, 0, 0));
@@ -108,7 +110,9 @@ namespace shaders_app
             base.OnRenderFrame(args);
             
             _renderer.Prepare();
-            _renderer.Render(_entity, _shader, _camera);
+            _shader.LoadCamera(_camera);
+            _shader.LoadLight(_light);
+            _renderer.Render(_entity, _shader);
 
             SwapBuffers();
         }

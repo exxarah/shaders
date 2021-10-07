@@ -28,19 +28,20 @@ namespace shaders_lib
         /// <param name="uvs">The UV Texture Coordinates of the vertices</param>
         /// <param name="indices">The indices of vertices, how they relate to each other and form triangles</param>
         /// <returns>The new model</returns>
-        public RawModel LoadToVao(float[] positions, float[] uvs, int[] indices)
+        public RawModel LoadToVao(float[] positions, float[] uvs, int[] indices, float[] normals)
         {
             int vaoID = CreateVAO();
             BindIndicesBuffer(indices);
             StoreDataInAttributeList(0, 3, positions);
             StoreDataInAttributeList(1, 2, uvs);
+            StoreDataInAttributeList(2, 3, normals);
             UnbindVAO();
             return new RawModel(vaoID, indices.Length);
         }
 
         public RawModel LoadToVao(ModelData data)
         {
-            return LoadToVao(data.Vertices, data.Uvs, data.Indices);
+            return LoadToVao(data.Vertices, data.Uvs, data.Indices, data.Normals);
         }
 
         public RawModel LoadModel(string fileName)
