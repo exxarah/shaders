@@ -10,9 +10,9 @@ uniform sampler2D modelTexture;
 uniform vec3 lightColor;
 
 void main() {
-    // vec4 diffuseColor = texture(modelTexture, pass_textureCoord);
+    vec4 diffuseColor = texture(modelTexture, pass_textureCoord);
     // vec4 diffuseColor = vec4(pass_textureCoord.x, pass_textureCoord.y, 0.0f, 1.0f);
-    vec4 diffuseColor = vec4(1.0f, 0.5f, 0.31f, 1.0f);
+    // vec4 diffuseColor = vec4(1.0f, 0.5f, 0.31f, 1.0f);
     
     vec3 unitNormal = normalize(surfaceNormal);
     vec3 unitLightVector = normalize(toLightVector);

@@ -17,6 +17,10 @@ namespace shaders_lib
     /// </summary>
     public class Loader
     {
+        private const string ModelPath = "Assets/models/";
+        private const string TexturePath = "Assets/textures/";
+        private const string MissingTexture = "missing.png";
+        
         private List<int> _vaos = new List<int>();
         private List<int> _vbos = new List<int>();
         private List<int> _textures = new List<int>();
@@ -66,7 +70,7 @@ namespace shaders_lib
         /// <returns>The new texture</returns>
         public Texture LoadTexture(string fileName)
         {
-            string path = "Assets/textures/" + fileName;
+            string path = TexturePath + fileName;
             int textureID = CreateTexture();
             LoadImage(path);
             TextureParameters();
@@ -168,7 +172,7 @@ namespace shaders_lib
 
         public ModelData ParseFile(string fileName)
         {
-            string path = "Assets/models/" + fileName;
+            string path = ModelPath + fileName;
             string fileType = fileName.Split('.').Last();
 
             ModelData data;
@@ -208,7 +212,16 @@ namespace shaders_lib
         /// <param name="path">The image to load</param>
         private void LoadImage(string path)
         {
-            Image<Rgba32> image = Image.Load<Rgba32>(path);
+            Image<Rgba32> image;
+            try
+            {
+                image = Image.Load<Rgba32>(path);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                image = Image.Load<Rgba32>(TexturePath + MissingTexture);
+            }
             image.Mutate(x => x.Flip(FlipMode.Vertical));
             var pixels = BuildPixelArray(image);
             

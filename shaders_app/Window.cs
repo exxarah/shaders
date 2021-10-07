@@ -52,7 +52,7 @@ namespace shaders_app
             _light = new Light(new Vector3(0, 0, 10), Vector3.One);
             
             _cube = _loader.LoadModel("suzanne.obj");
-            _texture = _loader.LoadTexture("default.png");
+            _texture = _loader.LoadTexture("white.png");
             _model = new TexturedModel(_cube, _texture);
             _entity = new Entity(_model, new Vector3(0, 0, 0));
             
