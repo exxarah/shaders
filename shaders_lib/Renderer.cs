@@ -39,7 +39,9 @@ namespace shaders_lib
         /// </summary>
         /// <param name="entity">The entity to draw</param>
         /// <param name="shader">The shader to draw with</param>
-        public void Render(Entity entity, StaticShader shader)
+        /// <param name="camera">The camera to get projection and view from</param>
+        /// <param name="light">The light to get brightness from</param>
+        public void Render(Entity entity, StaticShader shader, Camera camera, Light light)
         {
             shader.Start();
             TexturedModel model = entity.Model;
@@ -53,6 +55,8 @@ namespace shaders_lib
             
             // Set Uniforms here
             shader.LoadEntity(entity);
+            shader.LoadCamera(camera);
+            shader.LoadLight(light);
 
             GL.DrawElements(PrimitiveType.Triangles, rawModel.VertexCount, DrawElementsType.UnsignedInt, 0);
             

@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using shaders_lib.Entities;
 

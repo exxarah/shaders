@@ -110,9 +110,7 @@ namespace shaders_app
             base.OnRenderFrame(args);
             
             _renderer.Prepare();
-            _shader.LoadCamera(_camera);
-            _shader.LoadLight(_light);
-            _renderer.Render(_entity, _shader);
+            _renderer.Render(_entity, _shader, _camera, _light);
 
             SwapBuffers();
         }
