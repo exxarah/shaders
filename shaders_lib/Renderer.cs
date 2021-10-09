@@ -1,7 +1,6 @@
 ﻿using System;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using shaders_lib.Entities;
 using shaders_lib.Models;
 using shaders_lib.Shaders;
@@ -50,10 +49,11 @@ namespace shaders_lib
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
             GL.EnableVertexAttribArray(2);
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, model.Texture.Handle);
             
+            model.Material.BindTextures();
+
             // Set Uniforms here
+            model.Material.SetUniforms(shader);
             shader.LoadEntity(entity);
             shader.LoadCamera(camera);
             shader.LoadLight(light);

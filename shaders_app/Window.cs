@@ -10,7 +10,6 @@ using shaders_lib;
 using shaders_lib.Entities;
 using shaders_lib.Models;
 using shaders_lib.Shaders;
-using shaders_lib.Textures;
 
 namespace shaders_app
 {
@@ -24,6 +23,7 @@ namespace shaders_app
         
         private RawModel _cube;
         private Texture _texture;
+        private Material _material;
         private TexturedModel _model;
         private Entity _entity;
         
@@ -51,9 +51,10 @@ namespace shaders_app
             _camera = new Camera(new Vector3(0, 0, 3), Size);
             _light = new Light(new Vector3(0, 0, 10), Vector3.One);
             
-            _cube = _loader.LoadModel("suzanne.obj");
+            _cube = _loader.LoadModel("cube.obj");
             _texture = _loader.LoadTexture("white.png");
-            _model = new TexturedModel(_cube, _texture);
+            _material = new PhongMaterial(_texture);
+            _model = new TexturedModel(_cube, _material);
             _entity = new Entity(_model, new Vector3(0, 0, 0));
             
             _shader = new StaticShader();

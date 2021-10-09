@@ -1,4 +1,4 @@
-﻿namespace shaders_lib.Textures
+﻿namespace shaders_lib.Shaders
 {
     /// <summary>
     /// Represents an Image Texture, to be applied to a model

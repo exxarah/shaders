@@ -1,4 +1,4 @@
-﻿using shaders_lib.Textures;
+﻿using shaders_lib.Shaders;
 
 namespace shaders_lib.Models
 {
@@ -8,12 +8,12 @@ namespace shaders_lib.Models
     public class TexturedModel
     {
         public readonly RawModel Model;
-        public readonly Texture Texture;
+        public readonly Material Material;
 
-        public TexturedModel(RawModel model, Texture texture)
+        public TexturedModel(RawModel model, Material material)
         {
             Model = model;
-            Texture = texture;
+            Material = material;
         }
     }
 }

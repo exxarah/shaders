@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenTK.Graphics.OpenGL;
 using shaders_lib.Models;
-using shaders_lib.Textures;
+using shaders_lib.Shaders;
 using shaders_lib.Util;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
