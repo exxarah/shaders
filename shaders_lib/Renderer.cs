@@ -54,9 +54,9 @@ namespace shaders_lib
 
             // Set Uniforms here
             model.Material.SetUniforms(shader);
+            light.SetUniforms(shader);
             shader.LoadEntity(entity);
             shader.LoadCamera(camera);
-            shader.LoadLight(light);
 
             GL.DrawElements(PrimitiveType.Triangles, rawModel.VertexCount, DrawElementsType.UnsignedInt, 0);
             

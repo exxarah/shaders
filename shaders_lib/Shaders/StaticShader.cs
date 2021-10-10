@@ -33,11 +33,5 @@ namespace shaders_lib.Shaders
             SetMatrix4("projectionMatrix", camera.GetProjectionMatrix());
             SetMatrix4("viewMatrix", camera.GetViewMatrix());
         }
-
-        public void LoadLight(Light light)
-        {
-            SetVector3("lightPosition", light.Position);
-            SetVector3("lightColor", light.Color);
-        }
     }
 }
