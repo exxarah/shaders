@@ -13,7 +13,7 @@ namespace shaders_lib.Shaders
         public PhongMaterial(Texture diffuse)
         {
             DiffuseTexture = diffuse;
-            DiffuseFactor = Vector3.UnitX;
+            DiffuseFactor = Vector3.One;
             SpecularFactor = new Vector3(0.5f, 0.5f, 0.5f);
             ShininessFactor = 32f;
         }
