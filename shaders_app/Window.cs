@@ -10,6 +10,7 @@ using shaders_lib;
 using shaders_lib.Entities;
 using shaders_lib.Models;
 using shaders_lib.Shaders;
+using shaders_lib.Util;
 
 namespace shaders_app
 {
@@ -29,6 +30,8 @@ namespace shaders_app
         
         private StaticShader _shader;
         private Stopwatch _timer;
+
+        private const float mouseAcceleration = 10f;
 
         public Window(int width, int height, string title, int fps) :
             base(new GameWindowSettings()
@@ -73,37 +76,11 @@ namespace shaders_app
                 Close();
             }
 
-            if (KeyboardState.IsKeyDown(Keys.W))
+            if (MouseState.IsButtonDown(MouseButton.Middle))
             {
-                _camera.Move(0, 0, -0.02f);
+                Vector2 inputVector = (MouseState.Position - MouseState.PreviousPosition);
+                _entity.Rotate(inputVector.Y, inputVector.X, 0f);
             }
-
-            if (KeyboardState.IsKeyDown(Keys.S))
-            {
-                _camera.Move(0, 0, 0.02f);
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.A))
-            {
-                _camera.Move(-0.02f, 0, 0);
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.D))
-            {
-                _camera.Move(0.02f, 0, 0);
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.LeftShift))
-            {
-                _camera.Move(0, -0.02f, 0);
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.Space))
-            {
-                _camera.Move(0, 0.02f, 0);
-            }
-            
-            _entity.Rotate(1, 1, 0);
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
