@@ -96,7 +96,7 @@ namespace shaders_lib.Shaders
         /// </summary>
         /// <param name="uniform">The name of the uniform to be found</param>
         /// <returns>The location of the given uniform</returns>
-        private int GetUniformLocation(string uniform)
+        public int GetUniformLocation(string uniform)
         {
             if (_uniformLocations.TryGetValue(uniform, out int location) == false)
             {
@@ -213,15 +213,16 @@ namespace shaders_lib.Shaders
                 GL.Uniform1(GetUniformLocation(name), 0.0f);
             }
         }
-        
+
         /// <summary>
         /// Set a uniform Matrix4 on this shader
         /// </summary>
         /// <param name="name">The name of the uniform</param>
         /// <param name="data">The data to be set</param>
-        public void SetMatrix4(string name, Matrix4 data)
+        /// <param name="transpose">Whether or not to transpose the matrix</param>
+        public void SetMatrix4(string name, Matrix4 data, bool transpose=true)
         {
-            GL.UniformMatrix4(GetUniformLocation(name), true, ref data);
+            GL.UniformMatrix4(GetUniformLocation(name), transpose, ref data);
         }
         
         /// <summary>

@@ -51,24 +51,24 @@ namespace shaders_app
         {
             base.OnLoad();
 
-            // _loader = new Loader();
-            // _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f));
+            _loader = new Loader();
+            _renderer = new Renderer(new Color4(0.1f, 0.2f, 0.2f, 1.0f));
             _controller = new ImGuiController(ClientSize.X, ClientSize.Y);
 
-            // _camera = new Camera(new Vector3(0, 0, 3), ClientSize);
-            // _light = new Light(new Vector3(0, 0, 10), Vector3.One);
+            _camera = new Camera(new Vector3(0, 0, 3), ClientSize);
+            _light = new Light(new Vector3(0, 0, 10), Vector3.One);
             
-            // _cube = _loader.LoadModel("cube.obj");
-            // _texture = new Texture("diffuse", ImgLoader.LoadImage("white.png"));
-            // _material = new PhongMaterial(_texture);
-            // _model = new TexturedModel(_cube, _material);
-            // _entity = new Entity(_model, new Vector3(0, 0, 0));
+            _cube = _loader.LoadModel("cube.obj");
+            _texture = new Texture("diffuse", ImgLoader.LoadImage("white.png"));
+            _material = new PhongMaterial(_texture);
+            _model = new TexturedModel(_cube, _material);
+            _entity = new Entity(_model, new Vector3(0, 0, 0));
             
-            // _shader = new StaticShader();
-            // _shader.Start();
+            _shader = new StaticShader();
+            _shader.Start();
 
-            // _timer = new Stopwatch();
-            // _timer.Start();
+            _timer = new Stopwatch();
+            _timer.Start();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -82,8 +82,8 @@ namespace shaders_app
 
             if (MouseState.IsButtonDown(MouseButton.Middle))
             {
-                // Vector2 inputVector = (MouseState.Position - MouseState.PreviousPosition);
-                // _entity.Rotate(inputVector.Y, inputVector.X, 0f);
+                Vector2 inputVector = (MouseState.Position - MouseState.PreviousPosition);
+                _entity.Rotate(inputVector.Y, inputVector.X, 0f);
             }
         }
 
@@ -107,12 +107,9 @@ namespace shaders_app
             
             _controller.Update(this, (float)args.Time);
             
-            // _renderer.Prepare();
-            // _renderer.Render(_entity, _shader, _camera, _light);
-            
-            GL.ClearColor(new Color4(0, 32, 48, 255));
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-            
+            _renderer.Prepare();
+            _renderer.Render(_entity, _shader, _camera, _light);
+
             ImGui.ShowDemoWindow();
             _controller.Render();
             
@@ -132,7 +129,7 @@ namespace shaders_app
         protected override void OnUnload()
         {
             base.OnUnload();
-            //_loader.CleanUp();
+            _loader.CleanUp();
         }
     }
 }

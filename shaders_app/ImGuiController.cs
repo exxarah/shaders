@@ -286,7 +286,7 @@ namespace shaders_app
                 1.0f);
 
             _shader.Start();
-            _shader.SetMatrix4("projection_matrix", mvp);
+            _shader.SetMatrix4("projection_matrix", mvp, false);
             _shader.SetInt("in_fontTexture", 0);
             GlUtil.CheckGlError("Projection");
 
