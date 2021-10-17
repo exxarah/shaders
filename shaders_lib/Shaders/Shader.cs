@@ -17,7 +17,7 @@ namespace shaders_lib.Shaders
     /// <summary>
     /// Represents an OpenGL Program, consisting of a number of Shaders
     /// </summary>
-    public abstract class Shader : IDisposable
+    public class Shader : IDisposable
     {
         public readonly string Name;
         public int Program { get; private set; }

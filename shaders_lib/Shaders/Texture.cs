@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL4;
 using shaders_lib.Util;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace shaders_lib.Shaders
 {

@@ -10,7 +10,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace shaders_lib.Util
 {
-    static class GlUtil
+    public static class GlUtil
     {
         [Pure]
         public static float Clamp(float value, float min, float max)
