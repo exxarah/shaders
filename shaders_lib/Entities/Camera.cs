@@ -45,7 +45,9 @@ namespace shaders_lib.Entities
             }
         }
 
-        public float AspectRatio { get; private set; }
+        public Vector2i Size;
+        public float AspectRatio => Size.X / (float)Size.Y;
+
         public float Fov
         {
             get => MathHelper.RadiansToDegrees(_fov);
@@ -62,18 +64,10 @@ namespace shaders_lib.Entities
         public Vector3 Up => _up;
         public Vector3 Right => _right;
 
-        public Camera(Vector3 position, float aspectRatio)
-        {
-            Position = position;
-            AspectRatio = aspectRatio;
-            NearPlane = 0.01f;
-            FarPlane = 1000f;
-        }
-
         public Camera(Vector3 position, Vector2i displaySize)
         {
             Position = position;
-            AspectRatio = displaySize.X / (float)displaySize.Y;
+            Size = displaySize;
             NearPlane = 0.01f;
             FarPlane = 1000f;
         }
@@ -110,7 +104,7 @@ namespace shaders_lib.Entities
         {
             return Matrix4.Transpose(Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, NearPlane, FarPlane));
         }
-        
+
         /// <summary>
         /// Update the direction of vectors, called automatically in properties when Rotations are changed.
         /// </summary>
