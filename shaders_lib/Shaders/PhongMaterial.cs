@@ -22,7 +22,7 @@ namespace shaders_lib.Shaders
         {
             base.BindTextures();
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, DiffuseTexture.Handle);
+            GL.BindTexture(TextureTarget.Texture2D, DiffuseTexture.GLTexture);
         }
 
         public override void SetUniforms(Shader shader)

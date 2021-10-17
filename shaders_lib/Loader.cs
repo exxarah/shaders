@@ -64,21 +64,6 @@ namespace shaders_lib
         }
 
         /// <summary>
-        /// Create a texture from a file
-        /// </summary>
-        /// <param name="fileName">The image to be loaded as a texture</param>
-        /// <returns>The new texture</returns>
-        public Texture LoadTexture(string fileName)
-        {
-            string path = TexturePath + fileName;
-            int textureID = CreateTexture();
-            LoadImage(path);
-            TextureParameters();
-            UnbindTexture();
-            return new Texture(textureID);
-        }
-
-        /// <summary>
         /// To be called on Window.OnUnload(), ensures clean removal of all VAOs and VBOs
         /// </summary>
         public void CleanUp()
@@ -187,93 +172,6 @@ namespace shaders_lib
             }
 
             return data;
-        }
-
-        #endregion
-        
-        #region Textures
-
-        /// <summary>
-        /// Create a Texture2D and bind it for further use
-        /// </summary>
-        /// <returns>The handle for the texture</returns>
-        private int CreateTexture()
-        {
-            int textureObject = GL.GenTexture();
-            _textures.Add(textureObject);
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, textureObject);
-            return textureObject;
-        }
-
-        /// <summary>
-        /// Load an image into the currently bound Texture2D
-        /// </summary>
-        /// <param name="path">The image to load</param>
-        private void LoadImage(string path)
-        {
-            Image<Rgba32> image;
-            try
-            {
-                image = Image.Load<Rgba32>(path);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                image = Image.Load<Rgba32>(TexturePath + MissingTexture);
-            }
-            image.Mutate(x => x.Flip(FlipMode.Vertical));
-            var pixels = BuildPixelArray(image);
-            
-            GL.TexImage2D(
-                TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
-                image.Width, image.Height,
-                0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels
-                );
-        }
-
-        /// <summary>
-        /// Set the Parameters for the texture (if you don't do some of this, it breaks and is just black)
-        /// </summary>
-        private void TextureParameters()
-        {
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-            
-            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
-        }
-
-        /// <summary>
-        /// Unbind the current Texture2D by binding 0
-        /// </summary>
-        private void UnbindTexture()
-        {
-            GL.BindTexture(TextureTarget.Texture2D, 0);
-        }
-        
-        /// <summary>
-        /// Convert ImageSharp's image format into a byte array for use by OpenGL
-        /// </summary>
-        /// <param name="image">The loaded Image from ImageSharp</param>
-        /// <returns>A byte array of format RGBA</returns>
-        private byte[] BuildPixelArray(Image<Rgba32> image)
-        {
-            var pixels = new List<byte>(4 * image.Width * image.Height);
-            for (int y = 0; y < image.Height; y++)
-            {
-                var row = image.GetPixelRowSpan(y);
-                for (int x = 0; x < image.Width; x++)
-                {
-                    pixels.Add(row[x].R);
-                    pixels.Add(row[x].G);
-                    pixels.Add(row[x].B);
-                    pixels.Add(row[x].A);
-                }
-            }
-            return pixels.ToArray();
         }
 
         #endregion

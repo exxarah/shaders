@@ -55,7 +55,7 @@ namespace shaders_app
             _light = new Light(new Vector3(0, 0, 10), Vector3.One);
             
             _cube = _loader.LoadModel("cube.obj");
-            _texture = _loader.LoadTexture("missing.png");
+            _texture = new Texture("diffuse", ImgLoader.LoadImage("white.png"));
             _material = new PhongMaterial(_texture);
             _model = new TexturedModel(_cube, _material);
             _entity = new Entity(_model, new Vector3(0, 0, 0));
