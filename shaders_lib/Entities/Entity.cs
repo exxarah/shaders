@@ -67,5 +67,14 @@ namespace shaders_lib.Entities
             newRot.Z += rz;
             Rotation = newRot;
         }
+
+        /// <summary>
+        /// Rotate the object by a Vector3, relative to itself
+        /// </summary>
+        /// <param name="rotation">The Vector3 to rotate by</param>
+        public void Rotate(Vector3 rotation)
+        {
+            Rotation += rotation;
+        }
     }
 }
