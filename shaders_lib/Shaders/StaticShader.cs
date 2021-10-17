@@ -12,14 +12,7 @@ namespace shaders_lib.Shaders
     {
         private static readonly string VertexPath = "Assets/glsl/static.vert";
         private static readonly string FragmentPath = "Assets/glsl/static.frag";
-        public StaticShader() : base(VertexPath, FragmentPath) { }
-        
-        protected override void BindAttributes()
-        {
-            BindAttribute(0, "position");
-            BindAttribute(1, "textureCoord");
-            BindAttribute(2, "normal");
-        }
+        public StaticShader() : base("StaticShader", VertexPath, FragmentPath) { }
 
         public void LoadEntity(Entity entity)
         {
