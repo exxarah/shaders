@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
 using ImGuiNET;
-using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using shaders_lib;
 using shaders_lib.Entities;
 using shaders_lib.Models;
 using shaders_lib.Shaders;
 using shaders_lib.Util;
+using Vector2 = System.Numerics.Vector2;
+using Vector3 = System.Numerics.Vector3;
 
 namespace shaders_app
 {
@@ -82,7 +84,7 @@ namespace shaders_app
 
             if (MouseState.IsButtonDown(MouseButton.Middle))
             {
-                Vector2 inputVector = (MouseState.Position - MouseState.PreviousPosition);
+                OpenTK.Mathematics.Vector2 inputVector = (MouseState.Position - MouseState.PreviousPosition);
                 _entity.Rotate(inputVector.Y, inputVector.X, 0f);
             }
         }
@@ -110,9 +112,24 @@ namespace shaders_app
             _renderer.Prepare();
             _renderer.Render(_entity, _shader, _camera, _light);
 
-            ImGui.ShowDemoWindow();
-            _controller.Render();
+            ImGui.Begin("Phong Material");
+            ImGui.ColorEdit3("Diffuse Factor", ref ((PhongMaterial)_material).DiffuseFactor);
+            ImGui.ColorEdit3("Specular Factor", ref ((PhongMaterial)_material).SpecularFactor);
+            ImGui.SliderFloat("Shininess Factor", ref ((PhongMaterial)_material).ShininessFactor, 10f, 50f);
+            ImGui.End();
+
+            ImGui.Begin("Light");
+            ImGui.ColorEdit3("Colour", ref _light.Color);
+            ImGui.SliderFloat("Brightness", ref _light.Brightness, 0f, 3f);
+            ImGui.SliderFloat("Ambient Strength", ref _light.AmbientStrength, 0f, 1f);
+            ImGui.SliderFloat("Diffuse Strength", ref _light.DiffuseStrength, 0f, 1f);
+            ImGui.SliderFloat("Specular Strength", ref _light.SpecularStrength, 0f, 1f);
+            ImGui.End();
             
+            ImGui.ShowAboutWindow();
+            
+            _controller.Render();
+
             GlUtil.CheckGlError("End of frame");
 
             SwapBuffers();

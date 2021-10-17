@@ -245,6 +245,12 @@ namespace shaders_lib.Shaders
             GL.Uniform3(GetUniformLocation(name), data);
         }
 
+        public void SetVector3(string name, System.Numerics.Vector3 data)
+        {
+            var tkData = Util.Maths.SystemToTkVector3(data);
+            GL.Uniform3(GetUniformLocation(name), tkData);
+        }
+
         /// <summary>
         /// Set a uniform vector4 on this shader
         /// </summary>

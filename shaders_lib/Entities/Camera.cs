@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK.Mathematics;
+using Vector3 = System.Numerics.Vector3;
 
 namespace shaders_lib.Entities
 {
@@ -93,7 +94,10 @@ namespace shaders_lib.Entities
         /// <returns>The Matrix4 ViewMatrix</returns>
         public Matrix4 GetViewMatrix()
         {
-            return Matrix4.Transpose(Matrix4.LookAt(Position, Position + Front, Up));
+            var tkPosition = Util.Maths.SystemToTkVector3(Position);
+            var tkFront = Util.Maths.SystemToTkVector3(Front);
+            var tkUp = Util.Maths.SystemToTkVector3(Up);
+            return Matrix4.Transpose(Matrix4.LookAt(tkPosition, tkPosition + tkFront, tkUp));
         }
 
         /// <summary>

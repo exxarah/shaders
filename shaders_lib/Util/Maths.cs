@@ -44,5 +44,23 @@ namespace shaders_lib.Util
         {
             return CreateTransformationMatrix(translation, rotation.X, rotation.Y, rotation.Z, scale);
         }
+
+        public static Matrix4 CreateTransformationMatrix(
+            System.Numerics.Vector3 translation,
+            System.Numerics.Vector3 rotation,
+            float scale)
+        {
+            return CreateTransformationMatrix(SystemToTkVector3(translation), SystemToTkVector3(rotation), scale);
+        }
+
+        public static System.Numerics.Vector3 TkToSystemVector3(OpenTK.Mathematics.Vector3 input)
+        {
+            return new System.Numerics.Vector3(input.X, input.Y, input.Z);
+        }
+
+        public static OpenTK.Mathematics.Vector3 SystemToTkVector3(System.Numerics.Vector3 input)
+        {
+            return new Vector3(input.X, input.Y, input.Z);
+        }
     }
 }

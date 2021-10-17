@@ -1,4 +1,4 @@
-﻿using OpenTK.Mathematics;
+﻿using System.Numerics;
 using shaders_lib.Shaders;
 
 namespace shaders_lib.Entities
@@ -6,7 +6,7 @@ namespace shaders_lib.Entities
     public class Light
     {
         public Vector3 Position { get; private set; }
-        public Vector3 Color { get; private set; }
+        public Vector3 Color;
 
         public float Brightness;
 
