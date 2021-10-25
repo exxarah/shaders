@@ -14,7 +14,7 @@
   - [X] Lights
   - [X] Cameras
   - [X] Add a sphere floating in space
-  - [ ] Mouse input to rotate the sphere
+  - [X] Mouse input to rotate the sphere
   - [ ] Mouse input to rotate the light
 - [ ] 3d Shaders (the ones for the actual assignment. Note that these are chosen based on the extensions available for the Khronos glTF format)
   - [ ] Wireframe Shader (not for glTF, should be basically built into openGL, from memory)
