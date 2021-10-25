@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using ImGuiNET;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -26,14 +27,14 @@ namespace shaders_app
         private Camera _camera;
         private Light _light;
         
-        private RawModel _cube;
-        private Texture _texture;
-        private Material _material;
         private TexturedModel _model;
         private Entity _entity;
         
         private StaticShader _shader;
         private Stopwatch _timer;
+
+        private int comboFileChoice = 0;
+        private string[] comboFiles = new[] { "suzanne.obj", "sphere.obj", "cube.obj" };
 
         private const float mouseAcceleration = 10f;
 
@@ -60,10 +61,10 @@ namespace shaders_app
             _camera = new Camera(new Vector3(0, 0, 3), ClientSize);
             _light = new Light(new Vector3(0, 0, 10), Vector3.One);
             
-            _cube = _loader.LoadModel("cube.obj");
-            _texture = new Texture("diffuse", ImgLoader.LoadImage("white.png"));
-            _material = new PhongMaterial(_texture);
-            _model = new TexturedModel(_cube, _material);
+            RawModel mesh = _loader.LoadModel("suzanne.obj");
+            Texture texture = new Texture("diffuse", ImgLoader.LoadImage("white.png"));
+            Material material = new PhongMaterial(texture);
+            _model = new TexturedModel(mesh, material);
             _entity = new Entity(_model, new Vector3(0, 0, 0));
             
             _shader = new StaticShader();
@@ -87,6 +88,8 @@ namespace shaders_app
                 OpenTK.Mathematics.Vector2 inputVector = (MouseState.Position - MouseState.PreviousPosition);
                 _entity.Rotate(inputVector.Y, inputVector.X, 0f);
             }
+            
+            _entity.Rotate(0.5f, 0.5f, 0.5f);
         }
 
         protected override void OnTextInput(TextInputEventArgs e)
@@ -113,9 +116,9 @@ namespace shaders_app
             _renderer.Render(_entity, _shader, _camera, _light);
 
             ImGui.Begin("Phong Material");
-            ImGui.ColorEdit3("Diffuse Factor", ref ((PhongMaterial)_material).DiffuseFactor);
-            ImGui.ColorEdit3("Specular Factor", ref ((PhongMaterial)_material).SpecularFactor);
-            ImGui.SliderFloat("Shininess Factor", ref ((PhongMaterial)_material).ShininessFactor, 10f, 50f);
+            ImGui.ColorEdit3("Diffuse Factor", ref ((PhongMaterial)_model.Material).DiffuseFactor);
+            ImGui.ColorEdit3("Specular Factor", ref ((PhongMaterial)_model.Material).SpecularFactor);
+            ImGui.SliderFloat("Shininess Factor", ref ((PhongMaterial)_model.Material).ShininessFactor, 10f, 50f);
             ImGui.End();
 
             ImGui.Begin("Light");
@@ -124,6 +127,17 @@ namespace shaders_app
             ImGui.SliderFloat("Ambient Strength", ref _light.AmbientStrength, 0f, 1f);
             ImGui.SliderFloat("Diffuse Strength", ref _light.DiffuseStrength, 0f, 1f);
             ImGui.SliderFloat("Specular Strength", ref _light.SpecularStrength, 0f, 1f);
+            ImGui.End();
+            
+            ImGui.Begin("Model");
+            ImGui.Text(_model.Model.Name);
+            bool newMesh = ImGui.Combo("Mesh Choice", ref comboFileChoice, comboFiles, comboFiles.Length);
+            if (newMesh)
+            {
+                RawModel mesh = _loader.LoadModel(comboFiles[comboFileChoice]);
+                _model.Model = mesh;
+            }
+            ImGui.Text($"Vertex Count: {_model.Model.VertexCount}");
             ImGui.End();
             
             ImGui.ShowAboutWindow();

@@ -7,8 +7,8 @@ namespace shaders_lib.Models
     /// </summary>
     public class TexturedModel
     {
-        public readonly RawModel Model;
-        public readonly Material Material;
+        public RawModel Model;
+        public Material Material;
 
         public TexturedModel(RawModel model, Material material)
         {
