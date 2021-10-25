@@ -2,6 +2,7 @@
 {
     public class ModelData
     {
+        public string Name;
         public float[] Vertices { get; private set; }
         public float[] Uvs { get; private set; }
         public float[] Normals { get; private set; }
@@ -9,8 +10,9 @@
         
         public float FurthestPoint { get; private set; }
 
-        public ModelData(float[] vertices, float[] uvs, float[] normals, int[] indices, float furthestPoint)
+        public ModelData(string name, float[] vertices, float[] uvs, float[] normals, int[] indices, float furthestPoint)
         {
+            Name = name;
             Vertices = vertices;
             Uvs = uvs;
             Normals = normals;

@@ -12,12 +12,17 @@ namespace shaders_lib.Util
         {
             StreamReader file = new StreamReader(path);
             string line;
+            string name = "";
             List<Vertex> vertices = new List<Vertex>();
             List<Vector2> uvs = new List<Vector2>();
             List<Vector3> normals = new List<Vector3>();
             List<int> indices = new List<int>();
             while ((line = file.ReadLine()) != null)
             {
+                if (line.StartsWith("o "))
+                {
+                    name = line.Substring(2);
+                }
                 if (line.StartsWith("v "))
                 {
                     string[] currentLine = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
@@ -68,7 +73,7 @@ namespace shaders_lib.Util
                 ref verticesArray, ref texturesArray, ref normalsArray
                 );
 
-            ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, indicesArray, furthest);
+            ModelData data = new ModelData(name, verticesArray, texturesArray, normalsArray, indicesArray, furthest);
             return data;
         }
         

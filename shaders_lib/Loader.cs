@@ -18,9 +18,7 @@ namespace shaders_lib
     public class Loader
     {
         private const string ModelPath = "Assets/models/";
-        private const string TexturePath = "Assets/textures/";
-        private const string MissingTexture = "missing.png";
-        
+
         private List<int> _vaos = new List<int>();
         private List<int> _vbos = new List<int>();
         private List<int> _textures = new List<int>();
@@ -60,7 +58,10 @@ namespace shaders_lib
                 Console.WriteLine($"Error occurred while loading Model({fileName}).\n\n{e}");
                 throw;
             }
-            return LoadToVao(data);
+            RawModel model = LoadToVao(data);
+            model.Name = data.Name;
+            model.Path = fileName;
+            return model;
         }
 
         /// <summary>

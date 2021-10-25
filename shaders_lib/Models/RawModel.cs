@@ -5,6 +5,8 @@
     /// </summary>
     public class RawModel
     {
+        public string Name;
+        public string Path;
         public readonly int Handle;
         public readonly int VertexCount;
 
